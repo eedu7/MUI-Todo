@@ -3,7 +3,7 @@ import { FilterButton } from "./FilterButton.tsx";
 
 export const TodoBoard = () => {
     return (
-        <Stack>
+        <Stack spacing={2}>
             <FilterButton />
         </Stack>
     );

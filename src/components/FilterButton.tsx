@@ -16,26 +16,25 @@ export const FilterButton = () => {
 
     return (
         <ToggleButtonGroup size={"small"} value={selected} onChange={handleChange} exclusive color={"primary"}>
-            <ToggleButton value="all">
-                <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>
-                    All
-                </Typography>
-            </ToggleButton>
-            <ToggleButton value="pending">
-                <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>
-                    Pending
-                </Typography>
-            </ToggleButton>
-            <ToggleButton value="in-progress">
-                <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>
-                    In-Progress
-                </Typography>
-            </ToggleButton>
-            <ToggleButton value="completed">
-                <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>
-                    Completed
-                </Typography>
-            </ToggleButton>
+            <FilterToggleButton value="all" title="All" />
+            <FilterToggleButton value="pending" title="Pending" />
+            <FilterToggleButton value="in-progress" title="In-Progress" />
+            <FilterToggleButton value="completed" title="Completed" />
         </ToggleButtonGroup>
+    );
+};
+
+interface FilterToggleButtonProps {
+    value: string;
+    title: string;
+}
+
+const FilterToggleButton = ({ value, title }: FilterToggleButtonProps) => {
+    return (
+        <ToggleButton value={value}>
+            <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem" }, px: { xs: 0, sm: 1 } }}>
+                {title}
+            </Typography>
+        </ToggleButton>
     );
 };

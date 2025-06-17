@@ -18,7 +18,7 @@ export default function App(): React.ReactElement {
         >
             <TodoListToolbar />
             <Stack
-                spacing={{ xs: 2, md: 4, lg: 8 }}
+                spacing={{ xs: 2, md: 4 }}
                 marginTop={4}
                 padding={2}
                 sx={{
