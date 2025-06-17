@@ -1,9 +1,9 @@
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import { tasks } from "../data.ts";
 
 export const TodoListCards = () => {
     return (
-        <Grid container gap={4}>
+        <Grid container spacing={2}>
             {tasks.map((task) => (
                 <TodoCard key={task.id} {...task} />
             ))}
@@ -21,10 +21,24 @@ interface TodoCardProps {
 
 const TodoCard = ({ title, description }: TodoCardProps) => {
     return (
-        <Grid>
-            <Card>
-                <CardHeader>{title}</CardHeader>
-                <CardContent>{description}</CardContent>
+        <Grid
+            size={{
+                xs: 12,
+                sm: 6,
+                md: 3,
+            }}
+        >
+            <Card
+                elevation={2}
+                sx={{
+                    width: "100%",
+                    height: "100%",
+                }}
+            >
+                <CardContent>
+                    <Typography>{title}</Typography>
+                    <Typography>{description}</Typography>
+                </CardContent>
             </Card>
         </Grid>
     );
