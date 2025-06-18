@@ -1,8 +1,14 @@
-import type { Task, TaskState } from "../types.ts"; // Assuming you have a Task type
+import type { Task } from "../types.ts"; // Assuming you have a Task type
 import { Grid, Paper, Stack, Typography } from "@mui/material";
 import { TodoCard } from "./TodoCard.tsx";
 import { NoTaskFound } from "./NoTaskFound.tsx";
-import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import {
+    arrayMove,
+    horizontalListSortingStrategy,
+    SortableContext,
+    useSortable,
+    verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import {
     closestCorners,
@@ -13,13 +19,10 @@ import {
     useDroppable,
 } from "@dnd-kit/core";
 import { useTaskManager } from "../hooks/useTaskManager.ts";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { FilterContext } from "../context/FilterContext.ts";
 
-interface AllTodosBoardProps {
-    tasks: TaskState;
-}
-
-const SortableItem = ({ id, children }: { id: string; children: React.ReactNode }) => {
+export const SortableItem = ({ id, children }: { id: string; children: React.ReactNode }) => {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
         id,
         transition: {
@@ -83,13 +86,13 @@ const DroppableColumn = ({
     );
 };
 
-export const AllTodosBoard = ({ tasks }: AllTodosBoardProps) => {
+export const AllTodosBoard = () => {
+    const { tasks, dispatch } = useTaskManager();
+
     const pendingTasks = tasks.pending;
     const completedTasks = tasks.completed;
     const inProgressTasks = tasks["in-progress"];
     const [activeTask, setActiveTask] = useState<Task | null>(null);
-
-    const { dispatch } = useTaskManager();
 
     // Helper function to find which column a task belongs to
     const findTaskColumn = (taskId: string): "pending" | "in-progress" | "completed" | null => {
@@ -229,59 +232,90 @@ export const AllTodosBoard = ({ tasks }: AllTodosBoardProps) => {
         });
     };
 
-    // Create a combined items array for the sortable context
     const allItems = [
         ...pendingTasks.map((task) => task.id),
         ...inProgressTasks.map((task) => task.id),
         ...completedTasks.map((task) => task.id),
     ];
 
+    const { filter } = useContext(FilterContext);
+
     return (
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
             <SortableContext items={allItems} strategy={verticalListSortingStrategy}>
-                <Grid container spacing={2}>
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <DroppableColumn id="pending" title="Pending Tasks" color="warning">
-                            {pendingTasks.length === 0 ? (
-                                <NoTaskFound />
-                            ) : (
-                                pendingTasks.map((task) => (
-                                    <SortableItem id={task.id} key={task.id}>
-                                        <TodoCard {...task} />
-                                    </SortableItem>
-                                ))
-                            )}
-                        </DroppableColumn>
-                    </Grid>
+                {filter === "all" ? (
+                    <Grid container spacing={2}>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <DroppableColumn id="pending" title="Pending Tasks" color="warning">
+                                {pendingTasks.length === 0 ? (
+                                    <NoTaskFound />
+                                ) : (
+                                    pendingTasks.map((task) => (
+                                        <SortableItem id={task.id} key={task.id}>
+                                            <TodoCard {...task} />
+                                        </SortableItem>
+                                    ))
+                                )}
+                            </DroppableColumn>
+                        </Grid>
 
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <DroppableColumn id="in-progress" title="In Progress" color="info">
-                            {inProgressTasks.length === 0 ? (
-                                <NoTaskFound />
-                            ) : (
-                                inProgressTasks.map((task) => (
-                                    <SortableItem id={task.id} key={task.id}>
-                                        <TodoCard {...task} />
-                                    </SortableItem>
-                                ))
-                            )}
-                        </DroppableColumn>
-                    </Grid>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <DroppableColumn id="in-progress" title="In Progress" color="info">
+                                {inProgressTasks.length === 0 ? (
+                                    <NoTaskFound />
+                                ) : (
+                                    inProgressTasks.map((task) => (
+                                        <SortableItem id={task.id} key={task.id}>
+                                            <TodoCard {...task} />
+                                        </SortableItem>
+                                    ))
+                                )}
+                            </DroppableColumn>
+                        </Grid>
 
-                    <Grid size={{ xs: 12, md: 4 }}>
-                        <DroppableColumn id="completed" title="Completed Tasks" color="success">
-                            {completedTasks.length === 0 ? (
-                                <NoTaskFound />
-                            ) : (
-                                completedTasks.map((task) => (
-                                    <SortableItem id={task.id} key={task.id}>
-                                        <TodoCard {...task} />
-                                    </SortableItem>
-                                ))
-                            )}
-                        </DroppableColumn>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                            <DroppableColumn id="completed" title="Completed Tasks" color="success">
+                                {completedTasks.length === 0 ? (
+                                    <NoTaskFound />
+                                ) : (
+                                    completedTasks.map((task) => (
+                                        <SortableItem id={task.id} key={task.id}>
+                                            <TodoCard {...task} />
+                                        </SortableItem>
+                                    ))
+                                )}
+                            </DroppableColumn>
+                        </Grid>
                     </Grid>
-                </Grid>
+                ) : (
+                    (() => {
+                        const filteredTasks = tasks[filter as keyof typeof tasks] ?? [];
+                        if (filteredTasks.length === 0) {
+                            return <NoTaskFound />;
+                        }
+                        return (
+                            <SortableContext items={filteredTasks} strategy={horizontalListSortingStrategy}>
+                                <Grid container spacing={2}>
+                                    {filteredTasks.map((task) => (
+                                        <Grid
+                                            key={task.id}
+                                            size={{
+                                                xs: 12,
+                                                sm: 6,
+                                                md: 4,
+                                                lg: 3,
+                                            }}
+                                        >
+                                            <SortableItem id={task.id} key={task.id}>
+                                                <TodoCard {...task} />
+                                            </SortableItem>
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                            </SortableContext>
+                        );
+                    })()
+                )}
             </SortableContext>
 
             <DragOverlay>{activeTask ? <TodoCard {...activeTask} /> : null}</DragOverlay>

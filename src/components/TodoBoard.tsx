@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import { FilterButton } from "./FilterButton.tsx";
-import { TodoListCards } from "./TodoListCards.tsx";
+import { AllTodosBoard } from "./AllTodosBoard.tsx";
 
 export const TodoBoard = () => {
     return (
@@ -11,7 +11,7 @@ export const TodoBoard = () => {
             }}
         >
             <FilterButton />
-            <TodoListCards />
+            <AllTodosBoard />
         </Stack>
     );
 };
