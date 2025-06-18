@@ -4,7 +4,7 @@ import { Container, Divider, Stack } from "@mui/material";
 import { TodoListToolbar } from "./components/TodoListToolbar.tsx";
 import { TodoListActionsBar } from "./components/TodoListActionsBar.tsx";
 import { TodoBoard } from "./components/TodoBoard.tsx";
-import { FilterContext } from "./states/FilterContext.ts";
+import { FilterContext } from "./context/FilterContext.ts";
 import type { Filter } from "./types.ts";
 import { TaskProvider } from "./providers/TaskProvider.tsx";
 

@@ -1,7 +1,7 @@
 import { type Task } from "../types.ts";
 import * as React from "react";
 import { useEffect, useReducer } from "react";
-import { type TaskActions, TaskContext } from "../states/TaskContext.ts";
+import { type TaskActions, TaskContext } from "../context/TaskContext.ts";
 
 function taskReducer(state: Task[], action: TaskActions): Task[] {
     switch (action.type) {

@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { FilterContext } from "../states/FilterContext.ts";
+import { FilterContext } from "../context/FilterContext.ts";
 import { useContext } from "react";
 import { useTaskManager } from "../hooks/useTaskManager.ts";
 
@@ -9,7 +9,7 @@ export const TodoListCards = () => {
     const { tasks } = useTaskManager();
     const filteredTasks = filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
 
-    if (tasks.length === 0) {
+    if (filteredTasks.length === 0) {
         return (
             <Box
                 sx={{ width: "100%", height: 96, border: "1px dashed grey" }}
