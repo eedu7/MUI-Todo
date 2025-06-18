@@ -61,6 +61,10 @@ function taskReducer(state: TaskState, action: TaskActions): TaskState {
             return newState;
         }
 
+        case "SET_TASKS": {
+            return action.tasks;
+        }
+
         default:
             return state;
     }

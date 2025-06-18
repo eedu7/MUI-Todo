@@ -18,7 +18,7 @@ export type TaskActions =
       }
     | {
           type: "SET_TASKS";
-          tasks: Task[];
+          tasks: TaskState;
       };
 
 export const TaskContext = createContext<{

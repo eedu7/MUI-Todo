@@ -78,7 +78,6 @@ const TodoModal = ({ open, handleClose }: TodoModalProps) => {
             created_at: new Date().toISOString(),
         };
 
-        alert(JSON.stringify(task));
         dispatch({
             type: "ADD_TASK",
             task: task,
