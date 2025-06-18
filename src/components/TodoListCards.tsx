@@ -7,7 +7,8 @@ export const TodoListCards = () => {
     const { filter } = useContext(FilterContext);
 
     const { tasks } = useTaskManager();
-    const filteredTasks = filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
+    const allTasks = Object.values(tasks).flat();
+    const filteredTasks = filter === "all" ? allTasks : (tasks[filter as keyof typeof tasks] ?? []);
 
     if (filteredTasks.length === 0) {
         return (

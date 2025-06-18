@@ -10,6 +10,12 @@ export type Task = {
     created_at: string;
 };
 
+export type TaskState = {
+    pending: Task[];
+    "in-progress": Task[];
+    completed: Task[];
+};
+
 export type Filter = "all" | TaskStatus;
 
 export type FilterContextType = {

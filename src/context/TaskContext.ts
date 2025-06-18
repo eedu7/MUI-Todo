@@ -1,6 +1,6 @@
 import * as React from "react";
 import { createContext } from "react";
-import type { Task } from "../types.ts";
+import type { Task, TaskState } from "../types.ts";
 
 export type TaskActions =
     | {
@@ -22,6 +22,6 @@ export type TaskActions =
       };
 
 export const TaskContext = createContext<{
-    tasks: Task[];
+    tasks: TaskState;
     dispatch: React.Dispatch<TaskActions>;
 } | null>(null);
