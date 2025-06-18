@@ -1,10 +1,4 @@
-type Task = {
-    id: string;
-    title: string;
-    description?: string;
-    status: "pending" | "in-progress" | "completed";
-    created_at: string;
-};
+import type { Task } from "./types.ts";
 
 export const tasks: Task[] = [
     // ---------------- PENDING ----------------

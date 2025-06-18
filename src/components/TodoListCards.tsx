@@ -1,10 +1,31 @@
-import { Card, CardContent, Grid, Typography } from "@mui/material";
-import { tasks } from "../data.ts";
+import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { FilterContext } from "../states/filterContext.ts";
+import { useContext } from "react";
+import { useTaskManager } from "../hooks/useTaskManager.ts";
 
 export const TodoListCards = () => {
+    const { filter } = useContext(FilterContext);
+
+    const { tasks } = useTaskManager();
+
+    const filteredTasks = filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
+
+    if (tasks.length === 0) {
+        return (
+            <Box
+                sx={{ width: "100%", height: 96, border: "1px dashed grey" }}
+                display="flex"
+                justifyContent={"center"}
+                alignItems={"center"}
+            >
+                <Typography color="grey">No tasks found.</Typography>
+            </Box>
+        );
+    }
+
     return (
         <Grid container spacing={2}>
-            {tasks.map((task) => (
+            {filteredTasks.map((task) => (
                 <TodoCard key={task.id} {...task} />
             ))}
         </Grid>
