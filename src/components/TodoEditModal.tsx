@@ -30,7 +30,7 @@ export const TodoEditModal = (props: EditProps) => {
 
     return (
         <Box>
-            <IconButton aria-label="Edit todo" size="small" onClick={handleOpen}>
+            <IconButton disabled aria-label="Edit todo" size="small" onClick={handleOpen}>
                 <EditIcon />
             </IconButton>
             <TodoModal open={open} handleClose={handleClose} {...props} />
