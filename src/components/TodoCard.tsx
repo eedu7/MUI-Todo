@@ -1,8 +1,11 @@
-import { Card, CardContent, Stack, Typography } from "@mui/material";
+import { Card, CardContent, IconButton, Stack, Typography } from "@mui/material";
 import PendingIcon from "@mui/icons-material/HourglassEmpty";
 import LoopIcon from "@mui/icons-material/Loop";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import DeleteIcon from "@mui/icons-material/Delete";
 import type { TaskStatus } from "../types.ts";
+import { TodoEditModal } from "./TodoEditModal.tsx";
+import { useTaskManager } from "../hooks/useTaskManager.ts";
 
 interface TodoCardProps {
     id: string;
@@ -12,7 +15,7 @@ interface TodoCardProps {
     created_at: string;
 }
 
-export const TodoCard = ({ title, description, status }: TodoCardProps) => {
+export const TodoCard = ({ id, title, description, status }: TodoCardProps) => {
     const statusColors = {
         pending: {
             bg: "#FFF3CD",
@@ -27,6 +30,14 @@ export const TodoCard = ({ title, description, status }: TodoCardProps) => {
             text: "#155724",
         },
     };
+
+    const { dispatch } = useTaskManager();
+    const handleDelete = () =>
+        dispatch({
+            type: "DELETE_TASK",
+            id: id,
+        });
+
     return (
         <Card
             elevation={2}
@@ -41,11 +52,19 @@ export const TodoCard = ({ title, description, status }: TodoCardProps) => {
         >
             <CardContent>
                 <Stack spacing={1}>
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                        <StatusIcon status={status} />
-                        <Typography fontWeight="700" variant="h6" fontSize={16}>
-                            {title}
-                        </Typography>
+                    <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Stack spacing={1} direction="row" alignItems="center">
+                            <StatusIcon status={status} />
+                            <Typography fontWeight="700" variant="h6" fontSize={16}>
+                                {title}
+                            </Typography>
+                        </Stack>
+                        <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ width: 100 }}>
+                            <TodoEditModal id={title} title={title} description={description} status={status} />
+                            <IconButton onClick={handleDelete}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </Stack>
                     </Stack>
                     <Typography variant="body2">{description}</Typography>
                 </Stack>

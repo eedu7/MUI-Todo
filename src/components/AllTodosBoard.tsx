@@ -6,6 +6,7 @@ import {
     arrayMove,
     horizontalListSortingStrategy,
     SortableContext,
+    sortableKeyboardCoordinates,
     useSortable,
     verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
@@ -16,7 +17,12 @@ import {
     type DragEndEvent,
     DragOverlay,
     type DragStartEvent,
+    KeyboardSensor,
+    PointerSensor,
+    TouchSensor,
     useDroppable,
+    useSensor,
+    useSensors,
 } from "@dnd-kit/core";
 import { useTaskManager } from "../hooks/useTaskManager.ts";
 import { useContext, useState } from "react";
@@ -93,6 +99,23 @@ export const AllTodosBoard = () => {
     const completedTasks = tasks.completed;
     const inProgressTasks = tasks["in-progress"];
     const [activeTask, setActiveTask] = useState<Task | null>(null);
+
+    const sensors = useSensors(
+        useSensor(PointerSensor, {
+            activationConstraint: {
+                distance: 5, // Improves UX for touch devices
+            },
+        }),
+        useSensor(TouchSensor, {
+            activationConstraint: {
+                delay: 250,
+                tolerance: 5,
+            },
+        }),
+        useSensor(KeyboardSensor, {
+            coordinateGetter: sortableKeyboardCoordinates,
+        }),
+    );
 
     // Helper function to find which column a task belongs to
     const findTaskColumn = (taskId: string): "pending" | "in-progress" | "completed" | null => {
@@ -241,7 +264,12 @@ export const AllTodosBoard = () => {
     const { filter } = useContext(FilterContext);
 
     return (
-        <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={closestCorners}>
+        <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            collisionDetection={closestCorners}
+        >
             <SortableContext items={allItems} strategy={verticalListSortingStrategy}>
                 {filter === "all" ? (
                     <Grid container spacing={2}>
