@@ -73,7 +73,6 @@ const TodoModal = ({ open, handleClose }: TodoModalProps) => {
         };
 
         alert(JSON.stringify(task));
-
         dispatch({
             type: "ADD_TASK",
             task: task,

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { ToggleButton, ToggleButtonGroup, Typography } from "@mui/material";
 
-import { FilterContext } from "../states/filterContext.ts";
+import { FilterContext } from "../states/FilterContext.ts";
 
 export const FilterButton = () => {
     const { filter, handleFilterChange } = useContext(FilterContext);

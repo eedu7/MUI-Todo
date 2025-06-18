@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
-import { FilterContext } from "../states/filterContext.ts";
+import { FilterContext } from "../states/FilterContext.ts";
 import { useContext } from "react";
 import { useTaskManager } from "../hooks/useTaskManager.ts";
 
@@ -7,7 +7,6 @@ export const TodoListCards = () => {
     const { filter } = useContext(FilterContext);
 
     const { tasks } = useTaskManager();
-
     const filteredTasks = filter === "all" ? tasks : tasks.filter((task) => task.status === filter);
 
     if (tasks.length === 0) {
