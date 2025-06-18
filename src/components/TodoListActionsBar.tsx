@@ -1,7 +1,6 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
-
-import AddIcon from "@mui/icons-material/Add";
+import { Stack, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { TodoCreateModal } from "./TodoCreateModal.tsx";
 
 export const TodoListActionsBar = () => {
     return (
@@ -21,24 +20,25 @@ export const TodoListActionsBar = () => {
                     },
                 }}
             />
-            <Button
-                startIcon={
-                    <AddIcon
-                        fontSize={"small"}
-                        sx={{
-                            fontSize: { xs: 14, sm: 18, md: 22 },
-                        }}
-                    />
-                }
-                aria-label="Add todo"
-                variant="contained"
-                size="small"
-                disableElevation
-            >
-                <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>
-                    Add todo
-                </Typography>
-            </Button>
+            {/*<Button*/}
+            {/*    startIcon={*/}
+            {/*        <AddIcon*/}
+            {/*            fontSize={"small"}*/}
+            {/*            sx={{*/}
+            {/*                fontSize: { xs: 14, sm: 18, md: 22 },*/}
+            {/*            }}*/}
+            {/*        />*/}
+            {/*    }*/}
+            {/*    aria-label="Add todo"*/}
+            {/*    variant="contained"*/}
+            {/*    size="small"*/}
+            {/*    disableElevation*/}
+            {/*>*/}
+            {/*    <Typography variant="h6" sx={{ fontSize: { xs: "0.6rem", sm: "0.8rem", md: "1rem" } }}>*/}
+            {/*        Add todo*/}
+            {/*    </Typography>*/}
+            {/*</Button>*/}
+            <TodoCreateModal />
         </Stack>
     );
 };
