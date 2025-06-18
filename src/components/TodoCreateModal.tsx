@@ -89,14 +89,16 @@ const TodoModal = ({ open, handleClose }: TodoModalProps) => {
         setDescriptionValue("");
     };
     return (
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={open} onClose={handleClose} closeAfterTransition>
             <Card sx={style}>
                 <CardContent>
                     <Box component="form" onSubmit={handleSubmit} autoComplete="off">
                         <Stack spacing={3}>
-                            <Typography variant="h6" component="h2" fontWeight="bold">
-                                Add new Task
-                            </Typography>
+                            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+                                <Typography variant="h6" component="h2" fontWeight="bold">
+                                    Add new Task
+                                </Typography>
+                            </Stack>
                             <TextField
                                 value={titleValue}
                                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTitleValue(e.target.value)}
