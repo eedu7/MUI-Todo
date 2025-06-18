@@ -1,7 +1,11 @@
-import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, Stack, Typography } from "@mui/material";
 import { FilterContext } from "../context/FilterContext.ts";
 import { useContext } from "react";
 import { useTaskManager } from "../hooks/useTaskManager.ts";
+import PendingIcon from "@mui/icons-material/HourglassEmpty";
+import LoopIcon from "@mui/icons-material/Loop";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import type { TaskStatus } from "../types.ts";
 
 export const TodoListCards = () => {
     const { filter } = useContext(FilterContext);
@@ -77,10 +81,31 @@ const TodoCard = ({ title, description, status }: TodoCardProps) => {
                 }}
             >
                 <CardContent>
-                    <Typography variant="h6">{title}</Typography>
-                    <Typography variant="body2">{description}</Typography>
+                    <Stack spacing={1}>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                            <StatusIcon status={status} />
+                            <Typography fontWeight="700" variant="h6" fontSize={16}>
+                                {title}
+                            </Typography>
+                        </Stack>
+                        <Typography variant="body2">{description}</Typography>
+                    </Stack>
                 </CardContent>
             </Card>
         </Grid>
     );
+};
+
+const StatusIcon = ({ status }: { status: TaskStatus }) => {
+    switch (status) {
+        case "completed":
+            return <CheckCircleIcon color="success" />;
+        case "pending":
+            return <PendingIcon color="warning" />;
+
+        case "in-progress":
+            return <LoopIcon color="info" />;
+        default:
+            return;
+    }
 };
